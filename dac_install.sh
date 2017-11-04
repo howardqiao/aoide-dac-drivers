@@ -60,7 +60,7 @@ function driver_install(){
 	#driver_uri="https://github.com/howardqiao/volumio2-aoide-drivers/raw/master/aoide_volumio_"$driver_version".tar.gz"
 	cd /
 	rm aoide_volumio_$driver_version.tar.gz
-	wget https://github.com/howardqiao/volumio2-aoide-drivers/raw/master/aoide_volumio_$driver_version.tar.gz
+	wget https://github.com/howardqiao/aoide-dac-drivers/raw/master/aoide_volumio_$driver_version.tar.gz
 	tar zxvf aoide_volumio_$driver_version.tar.gz
 	rm aoide_volumio_$driver_version.tar.gz
 	depmod -b / -a $driver_version+
