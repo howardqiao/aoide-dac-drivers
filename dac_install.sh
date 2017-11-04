@@ -57,12 +57,11 @@ function driver_check(){
 }
 function driver_install(){
 	echo "Install Aoide DACs driver V"$driver_version
-	#driver_uri="https://github.com/howardqiao/volumio2-aoide-drivers/raw/master/aoide_volumio_"$driver_version".tar.gz"
 	cd /
 	rm aoide_volumio_$driver_version.tar.gz
-	wget https://github.com/howardqiao/aoide-dac-drivers/raw/master/aoide_volumio_$driver_version.tar.gz
-	tar zxvf aoide_volumio_$driver_version.tar.gz
-	rm aoide_volumio_$driver_version.tar.gz
+	wget https://github.com/howardqiao/aoide-dac-drivers/raw/master/aoide_dac_$driver_version.tar.gz
+	tar zxvf aoide_dac_$driver_version.tar.gz
+	rm aoide_dac_$driver_version.tar.gz
 	depmod -b / -a $driver_version+
 	depmod -b / -a $driver_version-v7+
 	sync
