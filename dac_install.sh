@@ -58,7 +58,7 @@ function driver_check(){
 function driver_install(){
 	echo "Install Aoide DACs driver V"$driver_version
 	cd /
-	rm aoide_volumio_$driver_version.tar.gz
+	rm aoide_dac_$driver_version.tar.gz
 	wget https://github.com/howardqiao/aoide-dac-drivers/raw/master/aoide_dac_$driver_version.tar.gz
 	tar zxvf aoide_dac_$driver_version.tar.gz
 	rm aoide_dac_$driver_version.tar.gz
