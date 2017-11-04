@@ -7,5 +7,5 @@ aoide-zero-dacplus
 
 www.aoide.cc
 
-curl -L --output ./dac_install.sh https://raw.githubusercontent.com/Hexxeh/rpi-update/master/rpi-update && sudo chmod +x ./dac_install.sh
+curl -L --output ./dac_install.sh https://github.com/howardqiao/volumio2-aoide-drivers/raw/master/dac_install.sh && sudo chmod +x ./dac_install.sh
 sudo ./dac_install.sh
