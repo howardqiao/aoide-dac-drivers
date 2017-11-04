@@ -1,4 +1,4 @@
-AOIDE DAC DRIVERS FOR VOLUMIO2
+AOIDE DAC DRIVERS FOR Raspberry PI
 
 aoide-dacii
 aoide-digipro
@@ -6,3 +6,6 @@ aoide-zero-digiplus
 aoide-zero-dacplus
 
 www.aoide.cc
+
+curl -L --output ./dac_install.sh https://raw.githubusercontent.com/Hexxeh/rpi-update/master/rpi-update && sudo chmod +x ./dac_install.sh
+sudo ./dac_install.sh
