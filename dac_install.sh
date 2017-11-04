@@ -73,6 +73,11 @@ function driver_disable(){
 	sed -i '/dtoverlay=aoide-digipro/d' /boot/config.txt
 	sed -i '/dtoverlay=aoide-zero-dacplus/d' /boot/config.txt
 	sed -i '/dtoverlay=aoide-zero-digiplus/d' /boot/config.txt
+	sed -i "s/audio=on/audio=off/" /DietPi/config.txt
+	sed -i '/dtoverlay=aoide-dacii/d' /DietPi/config.txt
+	sed -i '/dtoverlay=aoide-digipro/d' /DietPi/config.txt
+	sed -i '/dtoverlay=aoide-zero-dacplus/d' /DietPi/config.txt
+	sed -i '/dtoverlay=aoide-zero-digiplus/d' /DietPi/config.txt
 }
 function driver_enable(){
 
@@ -90,6 +95,7 @@ function driver_enable(){
 	fi
 	driver_disable
 	echo "dtoverlay="$dtoverlay >> /boot/config.txt
+	echo "dtoverlay="$dtoverlay >> /DietPi/config.txt
 	read -p "You should reboot to enable the selected DAC(y/n)" b
 	case $b in 
 	y)
