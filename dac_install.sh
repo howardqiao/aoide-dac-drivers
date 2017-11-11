@@ -1,5 +1,6 @@
 #!/bin/bash
-driver_version="4.9.41"
+driver_version="4.9.51"
+firmware_hash="913eddd6d23f14ce34ae473a4c080c5c840ed583"
 driver_path="/lib/modules/"$driver_version+"/kernel/sound/soc/codecs/sabre9018k2m.ko"
 kernel_installed=1
 driver_installed=1
@@ -45,7 +46,7 @@ function kernel_install(){
 	apt update
 	apt install binutils
 	curl -L --output /usr/bin/rpi-update https://raw.githubusercontent.com/Hexxeh/rpi-update/master/rpi-update && sudo chmod +x /usr/bin/rpi-update
-	UPDATE_SELF=0 SKIP_BACKUP=1 rpi-update b9becbbf3f48e39f719ca6785d23c53ee0cdbe49
+	UPDATE_SELF=0 SKIP_BACKUP=1 rpi-update $firmware_hash
 }
 function driver_check(){
 	echo $driver_path
