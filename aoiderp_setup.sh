@@ -116,6 +116,7 @@ if ! grep -q AOIDE "/etc/emulationstation/es_systems.cfg"; then
   sed -i '/^<\/systemList>/i    <theme>zpod<\/theme>' /etc/emulationstation/es_systems.cfg
   sed -i '/^<\/systemList>/i  <\/system>' /etc/emulationstation/es_systems.cfg
 fi
+sed -i 's/play/play_pitft/' /home/pi/zpod/AOIDE\ PLAYER.sh
 
 echo "STEP 6:Config AP mode"
 systemctl stop dnsmasq
