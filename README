@@ -7,5 +7,11 @@ aoide-zero-dacplus
 
 www.aoide.cc
 
-curl -L --output ./dac_install.sh https://github.com/howardqiao/aoide-dac-drivers/raw/master/dac_install.sh && sudo chmod +x ./dac_install.sh
+curl -L --output ./dac_install.sh https://github.com/howardqiao/aoide-dac-drivers/raw/master/dac_install.sh && chmod +x ./dac_install.sh
 sudo ./dac_install.sh
+
+curl -L --output ./aoidetft_setup.sh https://github.com/howardqiao/aoide-dac-drivers/raw/master/aoidetft_setup.sh && chmod +x ./dac_install.sh
+sudo ./aoidetft_setup.sh
+
+curl -L --output ./aoiderp_setup.sh https://github.com/howardqiao/aoide-dac-drivers/raw/master/aoiderp_setup.sh && chmod +x ./dac_install.sh
+sudo ./aoiderp_setup.sh
