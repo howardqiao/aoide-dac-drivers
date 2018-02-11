@@ -2,6 +2,7 @@
 VERSION="2.361"
 DEFAULT_SS="mirrordirector.raspbian.org/raspbian"
 SS="mirrordirector.raspbian.org/raspbian"
+REPONAME=""
 function download(){
 git clone https://github.com/volumio/build.git --depth 1
 }
@@ -29,7 +30,7 @@ sed -i 's/^source.*$/source=http:\/\/'"$SS"'/g' build/recipes/arm.conf
 }
 function build(){
 cd build
-./build.sh -b arm -d pi -v $VERSION
+./build.sh -b arm -d pi -v $VERSION -l $REPONAME
 echo "Build Complete!"
 cd ..
 }
@@ -69,6 +70,7 @@ case $OPTION in
 	clear_reset
 	setsource
 	aoide_patch
+	REPONAME="aoide"
 	build
 	gz
 	;;
@@ -76,6 +78,7 @@ case $OPTION in
 	clear_reset
 	setsource
 	aoide_pitft_patch
+	REPONAME="aoide_pitft"
 	build
 	gz
 	;;
