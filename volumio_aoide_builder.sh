@@ -33,6 +33,9 @@ cd build
 echo "Build Complete!"
 cd ..
 }
+function gz(){
+gzip build/*.img
+}
 for (( ; ; ))
 do
 OPTION=$(whiptail --title "Volumio Image Build Tools(V$VERSION)" --menu "Choose an option($SS)." \
@@ -60,18 +63,21 @@ case $OPTION in
 	clear_reset
 	setsource
 	build
+	gz
 	;;
 	"AOIDE")
 	clear_reset
 	setsource
 	aoide_patch
 	build
+	gz
 	;;
 	"PITFT")
 	clear_reset
 	setsource
 	aoide_pitft_patch
 	build
+	gz
 	;;
 	"Version")
 	VERSION_CUSTOM=$(whiptail --inputbox "What is your image version?" 6 60 $VERSION --title "Volumio image version" 3>&1 1>&2 2>&3)
