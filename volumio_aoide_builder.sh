@@ -81,7 +81,7 @@ case $OPTION in
 	fi
 	;;
 	"Source")
-	SS_CUSTOM=$(whiptail --inputbox "What is your apt source?" 6 60 $SS --title "Set apt source" 3>&1 1>&2 2>&3)
+	SS_CUSTOM=$(whiptail --inputbox "What is your apt source?" 6 60 $SS --title "Set apt source(Insert '\' before '/'" 3>&1 1>&2 2>&3)
 	exitstatus=$?
 	if [ $exitstatus = 0 ]; then
 		SS=$SS_CUSTOM
