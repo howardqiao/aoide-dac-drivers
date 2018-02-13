@@ -1,7 +1,7 @@
 #!/bin/bash
 VERSION="2.361"
 DEFAULT_SS="mirrordirector.raspbian.org/raspbian"
-SS="mirrordirector.raspbian.org/raspbian"
+SS="mirrordirector.raspbian.org\/raspbian"
 REPONAME=""
 function download(){
 git clone https://github.com/volumio/build.git --depth 1
@@ -90,11 +90,35 @@ case $OPTION in
 	fi
 	;;
 	"Source")
-	SS_CUSTOM=$(whiptail --inputbox "What is your apt source?" 6 60 $SS --title "Set apt source(Insert '\' before '/'" 3>&1 1>&2 2>&3)
-	exitstatus=$?
-	if [ $exitstatus = 0 ]; then
-		SS=$SS_CUSTOM
-	fi
+	OPTION_SOURCE=$(whiptail --title "Volumio Image Build Tools(V$VERSION)" --menu "Choose an option($SS)." \
+		--cancel-button "Exit" 20 66 11 \
+		"Official" "mirrordirector.raspbian.org/raspbian" \
+		"Aliyun" "mirrors.aliyun.com/raspbian/raspbian" \
+		"Sohu" "mirrors.sohu.com/raspbian/raspbian" \
+		"Custom" "Custom settings." \
+		"Exit" "Exit" \
+		3>&1 1>&2 2>&3)
+	case $OPTION_SOURCE in
+		"Official")
+		SS="mirrordirector.raspbian.org\/raspbian"
+		;;
+		"Aliyun")
+		SS="mirrors.aliyun.com\/raspbian\/raspbian"
+		;;
+		"Sohu")
+		SS="mirrors.sohu.com\/raspbian\/raspbian"
+		;;
+		"Custom")
+		SS_CUSTOM=$(whiptail --inputbox "What is your apt source?" 6 60 $SS --title "Set apt source(Insert '\' before '/'" 3>&1 1>&2 2>&3)
+		exitstatus=$?
+		if [ $exitstatus = 0 ]; then
+			SS=$SS_CUSTOM
+		fi
+
+		;;
+		"Exit")
+		;;
+	esac
 	setsource
 	;;
 	"Clear")
