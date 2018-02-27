@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.361"
+VERSION="2.368"
 DEFAULT_SS="mirrordirector.raspbian.org/raspbian"
 SS="mirrordirector.raspbian.org\/raspbian"
 REPONAME=""
