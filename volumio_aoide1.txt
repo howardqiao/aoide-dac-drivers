@@ -1,5 +1,5 @@
 #---Aoide Patch---#
-driver_version="4.9.65"
+driver_version="4.9.80"
 echo "volumio aoide patches"
 echo "Patch arm.conf"
 cp recipes/arm.conf.bak recipes/arm.conf

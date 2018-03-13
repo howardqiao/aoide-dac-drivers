@@ -1,5 +1,5 @@
 #---Aoide Patch---#
-driver_version="4.9.65"
+driver_version="4.9.80"
 echo "volumio aoide pitft patches"
 echo "Patch arm.conf"
 #cp recipes/arm.conf.bak recipes/arm.conf
@@ -40,6 +40,7 @@ sed -i "s/^gpu_mem/#gpu_mem/" scripts/raspberryconfig.sh
 linenum=$(grep -n 'gpu_mem' scripts/raspberryconfig.sh | awk -F ":" '{print $1}')
 linenumfinal=$[$linenum+1]
 linenumfinala=$linenumfinal"a"
+sed -i "$linenumfinala dtoverlay=lirc-rpi,gpio_in_pin=26,gpio_in_pull=up" scripts/raspberryconfig.sh
 sed -i "$linenumfinala dtoverlay=pitft22,rotate=90,fps=30" scripts/raspberryconfig.sh
 sed -i "$linenumfinala hdmi_force_hotplug=1" scripts/raspberryconfig.sh
 sed -i "$linenumfinala hdmi_group=2" scripts/raspberryconfig.sh
@@ -47,4 +48,6 @@ sed -i "$linenumfinala hdmi_mode=87" scripts/raspberryconfig.sh
 sed -i "$linenumfinala hdmi_cvt=320 240 60 1 0 0 0" scripts/raspberryconfig.sh
 sed -i "$linenumfinala framebuffer_width=320" scripts/raspberryconfig.sh
 sed -i "$linenumfinala framebuffer_height=240" scripts/raspberryconfig.sh
+
+
 #---Aoide Patch---#
