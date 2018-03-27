@@ -1,6 +1,6 @@
 #!/bin/bash
-driver_version="4.9.65"
-firmware_hash="e4b56bb7efe47319e9478cfc577647e51c48e909"
+driver_version="4.14.29"
+firmware_hash="955fa1d6e8cd8c94ad8a6680a09269d9bd2945c5"
 driver_path="/lib/modules/"$driver_version+"/kernel/sound/soc/codecs/sabre9018k2m.ko"
 kernel_installed=1
 driver_installed=1
@@ -60,7 +60,7 @@ function driver_install(){
 	echo "Install Aoide DACs driver V"$driver_version
 	cd /
 	rm aoide_dac_$driver_version.tar.gz
-	wget https://github.com/howardqiao/aoide-dac-drivers/raw/master/aoide_dac_$driver_version.tar.gz
+	wget https://github.com/howardqiao/aoide-dac-drivers/raw/master/drivers/aoide_dac_$driver_version.tar.gz
 	tar zxvf aoide_dac_$driver_version.tar.gz
 	rm aoide_dac_$driver_version.tar.gz
 	depmod -b / -a $driver_version+
