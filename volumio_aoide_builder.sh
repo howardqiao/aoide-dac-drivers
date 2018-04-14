@@ -19,17 +19,17 @@ function clear_all(){
 rm -rf ./build
 }
 function aoide_patch(){
-sed -i -e '/BUILD="arm"/r patches\/volumio_aoide1.txt' build/build.sh
-sed -i -e '/Cloning Volumio UI/r patches\/volumio_aoide2.txt' build/build.sh
+sed -i -e '/BUILD="arm"/r patches/volumio_aoide1.txt' build/build.sh
+sed -i -e '/Cloning Volumio UI/r patches/volumio_aoide2.txt' build/build.sh
 if [ "$IR_Support" = true ]; then
-	sed -i -e '/Writing cmdline.txt file/r patches\/volumio_aoide_lirc_support.txt' build/scripts/raspberryconfig.sh
+	sed -i -e '/Writing cmdline.txt file/r patches/volumio_aoide_lirc_support.txt' build/scripts/raspberryconfig.sh
 fi
 }
 function aoide_pitft_patch(){
-sed -i -e '/BUILD="arm"/r patches\/volumio_aoide_pitft1.txt' build/build.sh
-sed -i -e '/Cloning Volumio UI/r patches\/volumio_aoide_pitft2.txt' build/build.sh
+sed -i -e '/BUILD="arm"/r patches/volumio_aoide_pitft1.txt' build/build.sh
+sed -i -e '/Cloning Volumio UI/r patches/volumio_aoide_pitft2.txt' build/build.sh
 if [ "$IR_Support" = true ]; then
-	sed -i -e '/Writing cmdline.txt file/r patches\/volumio_aoide_lirc_support.txt' build/scripts/raspberryconfig.sh
+	sed -i -e '/Writing cmdline.txt file/r patches/volumio_aoide_lirc_support.txt' build/scripts/raspberryconfig.sh
 fi
 }
 function setsource(){
