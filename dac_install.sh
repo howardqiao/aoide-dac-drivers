@@ -2,6 +2,8 @@
 driver_version="4.14.30"
 firmware_hash="b4d3b40a706b37ead86482f6f629631aa5ea6213"
 driver_path="/lib/modules/"$driver_version+"/kernel/sound/soc/codecs/sabre9018k2m.ko"
+driver_url="https://github.com/howardqiao/aoide-dac-drivers/raw/master/drivers/aoide_dac_"$driver_version".tar.gz"
+driver_filename="aoide_dac_"$driver_version".tar.gz"
 kernel_installed=1
 driver_installed=1
 driver_selected="none"
@@ -59,14 +61,18 @@ function driver_check(){
 function driver_install(){
 	echo "Install Aoide DACs driver V"$driver_version
 	cd /
-	if [ -f "aoide_dac_$driver_version.tar.gz" ]; then
-		rm aoide_dac_$driver_version.tar.gz
+	if [ -f "$driver_filename" ]; then
+		rm $driver_filename
 	fi
 	#wget https://github.com/howardqiao/aoide-dac-drivers/raw/master/drivers/aoide_dac_$driver_version.tar.gz
-	curl https://github.com/howardqiao/aoide-dac-drivers/raw/master/drivers/aoide_dac_$driver_version.tar.gz -o aoide_dac_$driversion.tar.gz --progress --retry 10 --retry-delay 10  --retry-max-time 100
-	if [ -f "aoide_dac_$driver_version.tar.gz" ]; then
-		tar zxvf aoide_dac_$driver_version.tar.gz
-		rm aoide_dac_$driver_version.tar.gz
+	echo "Download driver($driver_version) now..."
+	echo "URL:"$driver_url
+	echo "FILENAME:"$driver_filename
+	curl -L $driver_url -o $driver_filename --progress --retry 10 --retry-delay 10  --retry-max-time 100
+	#wget $driver_url 
+	if [ -f "$driver_filename" ]; then
+		tar zxvf $driver_filename
+		rm $driver_filename
 		depmod -b / -a $driver_version+
 		depmod -b / -a $driver_version-v7+
 		sync
