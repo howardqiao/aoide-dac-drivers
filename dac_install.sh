@@ -1,6 +1,6 @@
 #!/bin/bash
-driver_version="4.14.29"
-firmware_hash="955fa1d6e8cd8c94ad8a6680a09269d9bd2945c5"
+driver_version="4.14.30"
+firmware_hash="b4d3b40a706b37ead86482f6f629631aa5ea6213"
 driver_path="/lib/modules/"$driver_version+"/kernel/sound/soc/codecs/sabre9018k2m.ko"
 kernel_installed=1
 driver_installed=1
