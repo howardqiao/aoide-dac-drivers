@@ -44,7 +44,7 @@ function kernel_check(){
 function kernel_install(){
 	echo "Install Raspberry PI Kernel "$driver_version
 	apt update
-	apt install binutils
+	apt install binutils curl
 	curl -L --output /usr/bin/rpi-update https://raw.githubusercontent.com/Hexxeh/rpi-update/master/rpi-update && sudo chmod +x /usr/bin/rpi-update
 	UPDATE_SELF=0 SKIP_BACKUP=1 rpi-update $firmware_hash
 }
@@ -59,13 +59,20 @@ function driver_check(){
 function driver_install(){
 	echo "Install Aoide DACs driver V"$driver_version
 	cd /
-	rm aoide_dac_$driver_version.tar.gz
-	wget https://github.com/howardqiao/aoide-dac-drivers/raw/master/drivers/aoide_dac_$driver_version.tar.gz
-	tar zxvf aoide_dac_$driver_version.tar.gz
-	rm aoide_dac_$driver_version.tar.gz
-	depmod -b / -a $driver_version+
-	depmod -b / -a $driver_version-v7+
-	sync
+	if [ -f "aoide_dac_$driver_version.tar.gz" ]; then
+		rm aoide_dac_$driver_version.tar.gz
+	fi
+	#wget https://github.com/howardqiao/aoide-dac-drivers/raw/master/drivers/aoide_dac_$driver_version.tar.gz
+	curl https://github.com/howardqiao/aoide-dac-drivers/raw/master/drivers/aoide_dac_$driver_version.tar.gz -o aoide_dac_$driversion.tar.gz --progress --retry 10 --retry-delay 10  --retry-max-time 100
+	if [ -f "aoide_dac_$driver_version.tar.gz" ]; then
+		tar zxvf aoide_dac_$driver_version.tar.gz
+		rm aoide_dac_$driver_version.tar.gz
+		depmod -b / -a $driver_version+
+		depmod -b / -a $driver_version-v7+
+		sync
+	else
+		echo "Download driver failed"
+	fi
 }
 function driver_disable(){
 	sed -i "s/audio=on/audio=off/" /boot/config.txt
