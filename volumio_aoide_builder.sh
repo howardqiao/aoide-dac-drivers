@@ -1,5 +1,6 @@
 #!/bin/bash
 VERSION="2.389"
+KERNEL_VERSION="4.14.39"
 DEFAULT_SS="mirrordirector.raspbian.org/raspbian"
 SS="mirrordirector.raspbian.org\/raspbian"
 REPONAME=""
@@ -17,6 +18,10 @@ cd ..
 }
 function clear_all(){
 rm -rf ./build
+}
+function set_kernel_version(){
+sed -i -e "s/^driver_version=\".*\"/driver_version=\"$KERNEL_VERSION\"/" patches/volumio_aoide1.txt
+sed -i -e "s/^driver_version=\".*\"/driver_version=\"$KERNEL_VERSION\"/" patches/volumio_aoide_pitft1.txt
 }
 function aoide_patch(){
 sed -i -e '/BUILD="arm"/r patches/volumio_aoide1.txt' build/build.sh
@@ -51,7 +56,7 @@ mv build/*.img.gz output/
 }
 for (( ; ; ))
 do
-OPTION=$(whiptail --title "Volumio Image Build Tools(V$VERSION)" --menu "Choose an option($SS)." \
+OPTION=$(whiptail --title "Volumio Image Build Tools(V$VERSION,$KERNEL_VERSION)" --menu "Choose an option($SS)." \
 --cancel-button "Exit" 20 66 11 \
 "Tools" "Install tools needed by build script." \
 "Download" "Download latest build script." \
@@ -60,6 +65,7 @@ OPTION=$(whiptail --title "Volumio Image Build Tools(V$VERSION)" --menu "Choose 
 "PITFT" "Build with AOIDE DACs Drivers and Screen." \
 "IRSupport" "Build with IR Support." \
 "Version" "Set image version." \
+"Kernel" "Set kernel version." \
 "Source" "Set apt source of volumio." \
 "Clear" "Clear build folder." \
 "Exit" "Exit" \
@@ -82,6 +88,7 @@ case $OPTION in
 	"AOIDE")
 	clear_reset
 	setsource
+	set_kernel_version
 	aoide_patch
 	REPONAME="aoide"
 	build
@@ -90,6 +97,7 @@ case $OPTION in
 	"PITFT")
 	clear_reset
 	setsource
+	set_kernel_version
 	aoide_pitft_patch
 	REPONAME="aoide_pitft"
 	build
@@ -119,6 +127,14 @@ case $OPTION in
 	if [ $exitstatus = 0 ]; then
 		VERSION=$VERSION_CUSTOM
 	fi
+	;;
+	"Kernel")
+	KERNEL_VERSION_CUSTOM=$(whiptail --inputbox "What is your imkernelage version?" 6 60 $KERNEL_VERSION --title "Linux kernel version" 3>&1 1>&2 2>&3)
+	exitstatus=$?
+	if [ $exitstatus = 0 ]; then
+		KERNEL_VERSION=$KERNEL_VERSION_CUSTOM
+	fi
+	set_kernel_version
 	;;
 	"Source")
 	OPTION_SOURCE=$(whiptail --title "Volumio Image Build Tools(V$VERSION)" --menu "Choose an option($SS)." \
