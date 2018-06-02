@@ -7,7 +7,8 @@ FILE_RCLOCAL="/etc/rc.local"
 FILE_MODULES="/etc/modules"
 FILE_RETROARCH="/opt/retropie/configs/all/retroarch.cfg"
 FILE_ESINPUT="/opt/retropie/configs/all/emulationstation/es_input.cfg"
-SOFTWARE_LIST="binutils curl dnsmasq hostapd bridge-utils hostapd python-dev python-pip python-smbus libsdl2-image-2.0-0 libsdl2-ttf-2.0-0 libsdl2-gfx-1.0-0 wiringpi mpd mpc libmpdclient2 libasound2 libasound2-dev libasound2-data"
+FILE_AUTOSTART="/opt/retropie/configs/all/autostart.sh"
+SOFTWARE_LIST="libconfig9 binutils curl dnsmasq hostapd bridge-utils hostapd python-dev python-pip python-smbus libsdl2-image-2.0-0 libsdl2-ttf-2.0-0 libsdl2-gfx-1.0-0 wiringpi mpd mpc libmpdclient2 libasound2 libasound2-dev libasound2-data"
 UPMPD_URL="http://www.lesbonscomptes.com/upmpdcli/downloads/raspbian/pool/main/u/upmpdcli/upmpdcli_1.2.16-1~ppa1~stretch_armhf.deb"
 UPMPD_FILENAME="upmpdcli_1.2.16-1~ppa1~stretch_armhf.deb"
 LIBUPNP6_URL="http://www.lesbonscomptes.com/upmpdcli/downloads/raspbian/pool/main/libu/libupnp/libupnp6_1.6.20.jfd5-1~ppa1~stretch_armhf.deb"
@@ -16,8 +17,8 @@ LIBUPNPP4_URL="http://www.lesbonscomptes.com/upmpdcli/downloads/raspbian/pool/ma
 LIBUPNPP4_FILENAME="libupnpp4_0.16.1-1~ppa1~stretch_armhf.deb"
 SHAIRPORTSYNCMR_URL="http://repo.volumio.org/Volumio2/Binaries/shairport-sync-metadata-reader-arm.tar.gz"
 SHAIRPORTSYNCMR_FILENAME="shairport-sync-metadata-reader-arm.tar.gz"
-SHAIRPORTSYNC_URL="http://repo.volumio.org/Volumio2/Binaries/shairport-sync-3.0.2-arm.tar.gz"
-SHAIRPORTSYNC_FILENAME="shairport-sync-3.0.2-arm.tar.gz"
+#SHAIRPORTSYNC_URL="http://repo.volumio.org/Volumio2/Binaries/shairport-sync-3.0.2-arm.tar.gz"
+#SHAIRPORTSYNC_FILENAME="shairport-sync-3.0.2-arm.tar.gz"
 
 function software_install(){
 	echo "]Update system and install software.["
@@ -64,53 +65,19 @@ function software_install(){
 		fi
 	fi
 
-	if [ ! -f "/usr/local/bin/shairport-sync" ]; then
-		echo "Install shairpot-sync."
-		cd /
-		curl -LJ0 -o $SHAIRPORTSYNC_FILENAME  $SHAIRPORTSYNC_URL
-		tar xf $SHAIRPORTSYNC_FILENAME
-		if [ -f "$SHAIRPORTSYNC_FILENAME" ]; then
-			rm $SHAIRPORTSYNC_FILENAME
-		fi
+#	if [ ! -f "/usr/local/bin/shairport-sync" ]; then
+#		echo "Install shairpot-sync."
+#		cd /
+#		curl -LJ0 -o $SHAIRPORTSYNC_FILENAME  $SHAIRPORTSYNC_URL
+#		tar xf $SHAIRPORTSYNC_FILENAME
+#		if [ -f "$SHAIRPORTSYNC_FILENAME" ]; then
+#			rm $SHAIRPORTSYNC_FILENAME
+#		fi
+#	fi
+
+	if [ ! -f "/usr/sbin/hostapd-ori" ]; then
+		cp /usr/sbin/hostapd /usr/sbin/hostapd-ori
 	fi
-	
-	if [ -f "/lib/systemd/system/airplay.service" ]; then
-		rm /lib/systemd/system/airplay.service
-	fi
-	
-	touch /lib/systemd/system/airplay.service
-	cat << EOF >> /lib/systemd/system/airplay.service
-[Unit]
-Description=ShairportSync AirTunes receiver
-After=sound.target
-Requires=avahi-daemon.service
-After=avahi-daemon.service
-
-[Service]
-ExecStart=/usr/local/bin/shairport-sync
-User=volumio
-Group=volumio
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-	if [ -f "/etc/shairport-sync.conf" ]; then
-		rm /etc/shairport-sync.conf
-	fi
-	
-	touch /etc/shairport-sync.conf
-	cat << EOF >> /etc/shairport-sync.conf
-general =
-{
-    name = "ZPOD";
-};
-
-alsa =
-{
-  output_device = "hw:0,0";
-};
-EOF
 	
 	if [ ! -f "/usr/sbin/hostapd-edimax" ]; then
 		echo "Install special version of hostapd for edimax dongle."
@@ -146,6 +113,56 @@ function zpod_player_install(){
 	fi
 }
 
+function shairport_install(){
+	if [ ! -f "/usr/local/bin/shairport-sync" ]; then
+		if [ ! -f "/home/pi/zpod/zpod_res/shairport-sync" ]; then
+			echo "Shairport-sync doesn't exist."
+		else
+			cp /home/pi/zpod/zpod_res/shairport-sync /usr/local/bin/
+		fi
+	else
+		echo "shairport-sync exist."
+	fi
+	
+	if [ -f "/lib/systemd/system/airplay.service" ]; then
+		rm /lib/systemd/system/airplay.service
+	fi
+
+	touch /lib/systemd/system/airplay.service
+	cat << EOF >> /lib/systemd/system/airplay.service
+[Unit]
+Description=ShairportSync AirTunes receiver
+After=sound.target
+Requires=avahi-daemon.service
+After=avahi-daemon.service
+
+[Service]
+ExecStart=/usr/local/bin/shairport-sync
+User=pi
+Group=pi
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+	if [ -f "/etc/shairport-sync.conf" ]; then
+		rm /etc/shairport-sync.conf
+	fi
+	
+	touch /etc/shairport-sync.conf
+	cat << EOF >> /etc/shairport-sync.conf
+general =
+{
+    name = "ZPOD";
+};
+
+alsa =
+{
+  output_device = "hw:0,0";
+};
+EOF
+}
+
 function disable_input(){
 	sed -i '/^dtparam=i2c_arm/d' $FILE_CONFIG
 	sed -i '/^uinput/d' $FILE_MODULES
@@ -157,6 +174,7 @@ function disable_input(){
 	if [ -e "/etc/udev/rules.d/10-retrogame.rules" ]; then
 		rm /etc/udev/rules.d/10-retrogame.rules
 	fi
+	sed -i '/^\/home\/pi\/zpod\/volcontrol &/d' $FILE_RCLOCAL
 	sed -i '/^\/usr\/local\/bin\/retrogame &/d' $FILE_RCLOCAL
 	if [ -f "/boot/retrogame.cfg" ]; then
 		rm /boot/retrogame.cfg
@@ -180,6 +198,7 @@ function enable_input(){
 		fi
 		cp /home/pi/zpod/zpod_res/retrogame /usr/local/bin/retrogame
 	fi
+	sed -i '/^exit 0/i\/home\/pi\/zpod\/volcontrol &' $FILE_RCLOCAL
 	sed -i '/^exit 0/i\/usr\/local\/bin\/retrogame &' $FILE_RCLOCAL
 	if [ -f "/boot/retrogame.cfg" ]; then
 		rm /boot/retrogame.cfg
@@ -336,6 +355,12 @@ function config_emulationstation(){
   </inputConfig>
 </inputList>
 EOF
+	echo "Start player first."
+	IN_SYSTEM=$(cat /opt/retropie/configs/all/autostart.sh | grep zpod)
+	if [ -z "$IN_SYSTEM" ]; then
+		sed -i '/^emulationstation/icd \/home\/pi\/zpod' $FILE_AUTOSTART
+		sed -i '/^emulationstation/isudo .\/play' $FILE_AUTOSTART
+	fi
 }
 
 function config_retroarch(){
@@ -391,61 +416,75 @@ function config_mpd(){
 }
 
 function config_ap(){
-	systemctl stop dnsmasq
-	systemctl stop hostapd
-	echo "1.Config DHCPD."
-	sed -i 's/denyinterfaces wlan0//g' /etc/dhcpcd.conf
-	echo "denyinterfaces wlan0" >> /etc/dhcpcd.conf
-
-	echo "2.Config /etc/network/interfaces."
-	sed -i 's/allow-hotplug wlan0//g' /etc/network/interfaces
-	sed -i 's/iface wlan0 inet static//g' /etc/network/interfaces
-	sed -i 's/address 192.168.20.1//g' /etc/network/interfaces
-	sed -i 's/netmask 255.255.255.0//g' /etc/network/interfaces
-	sed -i 's/network 192.168.20.0//g' /etc/network/interfaces
-	sed -i 's/auto eth0//g' /etc/network/interfaces
-	sed -i 's/iface eth0 inet dhcp//g' /etc/network/interfaces
-
-	echo "allow-hotplug wlan0
-	iface wlan0 inet static
-		address 192.168.20.1
-		netmask 255.255.255.0
-		network 192.168.20.0
-	auto eth0
-	iface eth0 inet dhcp" >> /etc/network/interfaces
-
-	echo "3.Config dnsmasq"
-	if [ -f "/etc/dnsmasq.conf" ]; then
-	  rm /etc/dnsmasq.conf
+	echo ">Config Wireless."
+echo "] Enable DHCPCD ["
+if [ -f "/etc/dhcpcd.conf" ]; then
+	IN_DHCPCD=$(cat /etc/dhcpcd.conf | grep wlan0)
+        if [ -z "$IN_DHCPCD" ]; then
+                cat << EOF >> /etc/dhcpcd.conf
+interface wlan0
+    static ip_address=192.168.20.1/24
+EOF
 	fi
-	touch /etc/dnsmasq.conf
-	echo "interface=wlan0" >> /etc/dnsmasq.conf
-	echo "  dhcp-range=192.168.20.2,192.168.20.20,255.255.255.0,24h" >> /etc/dnsmasq.conf
+fi
+sudo systemctl enable dhcpcd
+sudo systemctl start dhcpcd
 
-	echo "4.Config hostapd"
-	if [ -f "/etc/hostapd/hostapd.conf" ]; then
-	  rm /etc/hostapd/hostapd.conf
-	fi
-	touch /etc/hostapd/hostapd.conf
-	echo "interface=wlan0
-	driver=nl80211
-	ssid=Aoide-ZPOD
-	hw_mode=g
-	channel=7
-	wmm_enabled=0
-	macaddr_acl=0
-	auth_algs=1
-	ignore_broadcast_ssid=0
-	wpa=2
-	wpa_passphrase=raspberry
-	wpa_key_mgmt=WPA-PSK
-	wpa_pairwise=TKIP
-	rsn_pairwise=CCMP" >> /etc/hostapd/hostapd.conf
+echo "] Enable DNSMASQ ["
+sudo sed -i 's/^[ \t]*interface.*//g' /etc/dnsmasq.conf
+sudo sed -i 's/^[ \t]*dhcp-range.*//g' /etc/dnsmasq.conf
 
-	sed -i 's/#DAEMON_CONF=""/DAEMON_CONF="\/etc\/hostapd\/hostapd.conf"/g' /etc/default/hostapd
-	echo "Config IP forward."
-	sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
-	cp /home/pi/zpod/zpod_res/iptables.ipv4.nat /etc/
+sudo cat << EOF >> /etc/dnsmasq.conf
+interface=wlan0
+  dhcp-range=192.168.20.2,192.168.20.20,255.255.255.0,24h
+EOF
+
+echo "] Enable HOSTAPD ["
+if [ -f "/etc/hostapd/hostapd.conf" ]; then
+	sudo rm /etc/hostapd/hostapd.conf
+fi
+sudo touch /etc/hostapd/hostapd.conf
+sudo cat << EOF >> /etc/hostapd/hostapd.conf
+interface=wlan0
+driver=nl80211
+ssid=ZPOD
+hw_mode=g
+channel=7
+wmm_enabled=0
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+wpa_passphrase=raspberry
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+EOF
+
+sed -i 's/#DAEMON_CONF/DAEMON_CONF/g' /etc/default/hostapd
+sed -i 's/^DAEMON_CONF=\".*\"/DAEMON_CONF=\"\/etc\/hostapd\/hostapd.conf\"/g' /etc/default/hostapd
+
+cp /usr/sbin/hostapd-ori /usr/sbin/hostapd
+sudo systemctl enable hostapd
+sudo systemctl start hostapd
+sudo systemctl enable dnsmasq
+sudo systemctl start dnsmasq
+
+if [ ! -f "/etc/sysctl.conf" ]; then
+	touch /etc/sysctl.conf
+fi
+sed -i 's/#net.ipv4.ip_forward=1//g' /etc/default/hostapd
+echo "net.ipv4.ip_forward=1" >>  /etc/sysctl.conf
+
+sudo iptables -t nat -A  POSTROUTING -o eth0 -j MASQUERADE
+
+if [ ! -f "/etc/iptables.ipv4.nat" ]; then
+	sudo iptables -t nat -A  POSTROUTING -o eth0 -j MASQUERADE
+	sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
+fi
+
+sed -i 's/iptables-restore.*//g' /etc/rc.local
+sed -i '/^exit 0/iiptables-restore < \/etc\/iptables.ipv4.nat' /etc/rc.local
 
 
 }
@@ -481,6 +520,7 @@ function main(){
 	driver_install
 	software_install
 	zpod_player_install
+	shairport_install
 	config_input
 	config_screen
 	config_raspi2fb
@@ -489,7 +529,7 @@ function main(){
 	#config_retroarch
 	config_mpd
 	config_samba
-	#config_ap
+	config_ap
 	echo ">Complete!<"
 }
 main
