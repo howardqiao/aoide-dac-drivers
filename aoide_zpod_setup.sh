@@ -8,7 +8,7 @@ FILE_MODULES="/etc/modules"
 FILE_RETROARCH="/opt/retropie/configs/all/retroarch.cfg"
 FILE_ESINPUT="/opt/retropie/configs/all/emulationstation/es_input.cfg"
 FILE_AUTOSTART="/opt/retropie/configs/all/autostart.sh"
-SOFTWARE_LIST="libconfig9 binutils curl dnsmasq hostapd bridge-utils hostapd python-dev python-pip python-smbus libsdl2-image-2.0-0 libsdl2-ttf-2.0-0 libsdl2-gfx-1.0-0 wiringpi mpd mpc libmpdclient2 libasound2 libasound2-dev libasound2-data"
+SOFTWARE_LIST="ffmpeg libconfig9 binutils curl dnsmasq hostapd bridge-utils hostapd python-dev python-pip python-smbus libsdl2-image-2.0-0 libsdl2-ttf-2.0-0 libsdl2-gfx-1.0-0 wiringpi mpd mpc libmpdclient2 libasound2 libasound2-dev libasound2-data"
 UPMPD_URL="http://www.lesbonscomptes.com/upmpdcli/downloads/raspbian/pool/main/u/upmpdcli/upmpdcli_1.2.16-1~ppa1~stretch_armhf.deb"
 UPMPD_FILENAME="upmpdcli_1.2.16-1~ppa1~stretch_armhf.deb"
 LIBUPNP6_URL="http://www.lesbonscomptes.com/upmpdcli/downloads/raspbian/pool/main/libu/libupnp/libupnp6_1.6.20.jfd5-1~ppa1~stretch_armhf.deb"
@@ -360,59 +360,44 @@ EOF
 	if [ -z "$IN_SYSTEM" ]; then
 		sed -i '/^emulationstation/icd \/home\/pi\/zpod' $FILE_AUTOSTART
 		sed -i '/^emulationstation/isudo .\/play' $FILE_AUTOSTART
+	fk
+	if [ -f "/home/pi/zpod/images/splash.png" ]; then
+		if [ -f "/etc/splashscreen.list" ]; then
+			rm /etc/splashscreen.list
+			touch /etc/splashscreen.list
+			echo "/home/pi/zpod/images/splash.png" > /etc/splashscreen.list
+		fi
 	fi
 }
 
 function config_retroarch(){
 	echo ">Config Retroarch"
-	sed -i '/^#*[ ]*audio_out_rate/d' $FILE_RETROARCH
-	sed -i '/^#*[ ]*input_exit_emulator/d' $FILE_RETROARCH
-	sed -i '/^#*[ ]*input_state_slot_increase/d' $FILE_RETROARCH
-	sed -i '/^#*[ ]*input_state_slot_decrease/d' $FILE_RETROARCH
-	sed -i '/^#*[ ]*input_reset/d' $FILE_RETROARCH
-	sed -i '/^#*[ ]*input_menu_toggle/d' $FILE_RETROARCH
-	sed -i '/^#*[ ]*input_enable_hotkey/d' $FILE_RETROARCH
 	
-	echo "audio_out_rate = 44100" >> $FILE_RETROARCH
-	echo 'input_exit_emulator = "enter"' >> $FILE_RETROARCH
-	echo 'input_state_slot_increase = "right"' >> $FILE_RETROARCH
-	echo 'input_state_slot_decrease = "left"' >> $FILE_RETROARCH
-	echo 'input_reset = "alt"' >> $FILE_RETROARCH
-	echo 'input_menu_toggle = "z"' >> $FILE_RETROARCH
-	echo 'input_enable_hotkey = "space"' >> $FILE_RETROARCH
-	
-	sed -i '/^#*[ ]*input_player1_a/d' $FILE_RETROARCH
-	sed -i '/^#*[ ]*input_player1_b/d' $FILE_RETROARCH
-	sed -i '/^#*[ ]*input_player1_y/d' $FILE_RETROARCH
-	sed -i '/^#*[ ]*input_player1_x/d' $FILE_RETROARCH
-	sed -i '/^#*[ ]*input_player1_start/d' $FILE_RETROARCH
-	sed -i '/^#*[ ]*input_player1_select/d' $FILE_RETROARCH
-	sed -i '/^#*[ ]*input_player1_l/d' $FILE_RETROARCH
-	sed -i '/^#*[ ]*input_player1_r/d' $FILE_RETROARCH
-	sed -i '/^#*[ ]*input_player1_left/d' $FILE_RETROARCH
-	sed -i '/^#*[ ]*input_player1_right/d' $FILE_RETROARCH
-	sed -i '/^#*[ ]*input_player1_up/d' $FILE_RETROARCH
-	sed -i '/^#*[ ]*input_player1_down/d' $FILE_RETROARCH
-	
-	echo 'input_player1_a = "ctrl"' >> $FILE_RETROARCH
-	echo 'input_player1_b = "alt"' >> $FILE_RETROARCH
-	echo 'input_player1_y = "x"' >> $FILE_RETROARCH
-	echo 'input_player1_x = "z"' >> $FILE_RETROARCH
-	echo 'input_player1_start = "enter"' >> $FILE_RETROARCH
-	echo 'input_player1_select = "space"' >> $FILE_RETROARCH
-	echo 'input_player1_l = "num2"' >> $FILE_RETROARCH
-	echo 'input_player1_r = "num1"' >> $FILE_RETROARCH
-	echo 'input_player1_left = "left"' >> $FILE_RETROARCH
-	echo 'input_player1_right = "right"' >> $FILE_RETROARCH
-	echo 'input_player1_up = "up"' >> $FILE_RETROARCH
-	echo 'input_player1_down = "down"' >> $FILE_RETROARCH
+	sed -i 's/^#[ \t]*audio_out_rate.*/audio_out_rate = 44100/' $FILE_RETROARCH
+	sed -i 's/[ \t]*input_player1_a[ \t]*=[ \t]*\".*\"/input_player1_a = \"k\"/' $FILE_RETROARCH
+	sed -i 's/[ \t]*input_player1_b[ \t]*=[ \t]*\".*\"/input_player1_b = \"j\"/' $FILE_RETROARCH
+	sed -i 's/[ \t]*input_player1_y[ \t]*=[ \t]*\".*\"/input_player1_y = \"u\"/' $FILE_RETROARCH
+	sed -i 's/[ \t]*input_player1_x[ \t]*=[ \t]*\".*\"/input_player1_x = \"i\"/' $FILE_RETROARCH
+	sed -i 's/^#[ \t]*input_state_slot_increase/input_state_slot_increase/' $FILE_RETROARCH
+	sed -i 's/^#[ \t]*input_state_slot_decrease/input_state_slot_decrease/' $FILE_RETROARCH
+	sed -i 's/^input_state_slot_increase[ \t]*=.*/input_state_slot_increase = \"right\"/' $FILE_RETROARCH
+	sed -i 's/^input_state_slot_decrease[ \t]*=.*/input_state_slot_decrease = \"left\"/' $FILE_RETROARCH
+	sed -i 's/[ \t].*input_exit_emulator[ \t].*=[ \t].*\".*\"/input_exit_emulator = \"enter\"/' $FILE_RETROARCH
+	sed -i 's/^#[ \t]*input_reset.*/input_reset = \"j\"/' $FILE_RETROARCH
+	sed -i 's/^#[ \t]*input_menu_toggle[ \t]*=.*/input_menu_toggle = \"i\"/' $FILE_RETROARCH
+	sed -i 's/^input_enable_hotkey[ \t]*=[ \t]\".*\"/input_enable_hotkey = \"rshift\"/' $FILE_RETROARCH
 }
+
 function config_mpd(){
+	echo ">Config Music Player Daemon"
 	if [ ! -d "/home/pi/music" ]; then
 		sudo -u pi mkdir /home/pi/music
 	fi
 #	sed -i -e 's/\/var\/lib\/mpd\/music/\/home\/pi\/music/g' /etc/mpd.conf
 	sed -i -e 's/^music_directory.*".*"/music_directory "\/home\/pi\/music"/' /etc/mpd.conf
+	sed -i 's/#[ \t]*mixer_device[ \t]*\".*\".*/\tmixer_device\t\"hw:0\"/' /etc/mpd.conf
+        sed -i 's/#[ \t]*mixer_control[ \t]*\".*\".*/\tmixer_control\t\"Digital\"/' /etc/mpd.conf
+
 }
 
 function config_ap(){
@@ -526,7 +511,7 @@ function main(){
 	config_raspi2fb
 	config_sound
 	config_emulationstation
-	#config_retroarch
+	config_retroarch
 	config_mpd
 	config_samba
 	config_ap
