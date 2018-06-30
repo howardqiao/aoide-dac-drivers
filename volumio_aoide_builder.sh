@@ -1,6 +1,6 @@
 #!/bin/bash
-VERSION="2.389"
-KERNEL_VERSION="4.14.39"
+VERSION="2.411"
+KERNEL_VERSION="4.14.50"
 DEFAULT_SS="mirrordirector.raspbian.org/raspbian"
 SS="mirrordirector.raspbian.org\/raspbian"
 REPONAME=""
