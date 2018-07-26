@@ -1,6 +1,6 @@
 #!/bin/bash
-driver_version="4.14.50"
-firmware_hash="f1a1eec4c38d3c36b67c609f6c27805d04dab978"
+driver_version="4.14.56"
+firmware_hash="d985893ae67195d0cce632efe4437e5fcde4b64b"
 driver_path="/lib/modules/"$driver_version+"/kernel/sound/soc/codecs/sabre9018k2m.ko"
 driver_url="https://github.com/howardqiao/aoide-dac-drivers/raw/master/drivers/aoide_dac_"$driver_version".tar.gz"
 driver_filename="aoide_dac_"$driver_version".tar.gz"
