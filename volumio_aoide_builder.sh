@@ -1,8 +1,8 @@
 #!/bin/bash
 VERSION="2.413"
 KERNEL_VERSION="4.14.56"
-DEFAULT_SS="mirrordirector.raspbian.org/raspbian"
-SS="mirrordirector.raspbian.org\/raspbian"
+DEFAULT_SS="archive.volumio.org/raspbian"
+SS="archive.volumio.org\/raspbian"
 REPONAME=""
 IR_Support=true
 function download(){
