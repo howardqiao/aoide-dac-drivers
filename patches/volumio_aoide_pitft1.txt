@@ -40,7 +40,7 @@ sed -i "s/^gpu_mem/#gpu_mem/" scripts/raspberryconfig.sh
 linenum=$(grep -n 'gpu_mem' scripts/raspberryconfig.sh | awk -F ":" '{print $1}')
 linenumfinal=$[$linenum+1]
 linenumfinala=$linenumfinal"a"
-sed -i "$linenumfinala dtoverlay=lirc-rpi,gpio_in_pin=26,gpio_in_pull=up" scripts/raspberryconfig.sh
+#sed -i "$linenumfinala dtoverlay=lirc-rpi,gpio_in_pin=26,gpio_in_pull=up" scripts/raspberryconfig.sh
 sed -i "$linenumfinala dtoverlay=pitft22,rotate=90,fps=30" scripts/raspberryconfig.sh
 sed -i "$linenumfinala hdmi_force_hotplug=1" scripts/raspberryconfig.sh
 sed -i "$linenumfinala hdmi_group=2" scripts/raspberryconfig.sh
