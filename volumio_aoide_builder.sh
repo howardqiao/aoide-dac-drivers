@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.513"
+VERSION="2.522"
 KERNEL_VERSION="4.14.71"
 DEFAULT_SS="archive.volumio.org/raspbian"
 SS="archive.volumio.org\/raspbian"
