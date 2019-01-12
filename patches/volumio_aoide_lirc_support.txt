@@ -91,7 +91,7 @@ sed -i "s/^DEVICE=\".*\"/DEVICE=\"\/dev\/lirc0\"/" /etc/lirc/hardware.conf
 sed -i "s/^MODULES=\".*\"/MODULES=\"lirc_rpi\"/" /etc/lirc/hardware.conf
 echo "Patch MPD Client Volume settings"
 MPDVOLUMELINE=$(sed -n '/\"id\": \"mpdvolume/=' /volumio/app/plugins/audio_interface/alsa_controller/UIConfig.json)
-MPDVOLUMEVALUE=$[ $MPDVOLUMELINE + 4 ]
+MPDVOLUMEVALUE=$[ $MPDVOLUMELINE + 5 ]
 MPDVOLUMEVALUE=$MPDVOLUMEVALUE"c"
 sed -ie "$MPDVOLUMEVALUE \"value\":true" /volumio/app/plugins/audio_interface/alsa_controller/UIConfig.json
 
