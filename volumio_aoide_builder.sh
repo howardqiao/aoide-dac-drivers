@@ -6,57 +6,53 @@ SS="archive.volumio.org\/raspbian"
 REPONAME=""
 IR_Support=true
 function download(){
-git clone https://github.com/volumio/build.git --depth 1
+	git clone https://github.com/volumio/build.git --depth 1
 }
 function clear_reset(){
-cd build
-git reset --hard
-rm *.img
-rm *.gz
-rm -rf ./build
-cd ..
+	cd build
+	git reset --hard
+	rm *.img
+	rm *.gz
+	rm -rf ./build
+	cd ..
 }
 function clear_all(){
-rm -rf ./build
+	rm -rf ./build
 }
 function set_kernel_version(){
-sed -i -e "s/^driver_version=\".*\"/driver_version=\"$KERNEL_VERSION\"/" patches/volumio_aoide1.txt
-sed -i -e "s/^driver_version=\".*\"/driver_version=\"$KERNEL_VERSION\"/" patches/volumio_aoide_pitft1.txt
+	sed -i -e "s/^driver_version=\".*\"/driver_version=\"$KERNEL_VERSION\"/" patches/volumio_aoide1.txt
+	sed -i -e "s/^driver_version=\".*\"/driver_version=\"$KERNEL_VERSION\"/" patches/volumio_aoide_pitft1.txt
 }
 function aoide_patch(){
-sed -i -e '/BUILD="arm"/r patches/volumio_aoide1.txt' build/build.sh
-sed -i -e '/Cloning Volumio UI/r patches/volumio_aoide2.txt' build/build.sh
-if [ "$IR_Support" = true ]; then
-	sed -i -e '/Writing cmdline.txt file/r patches/volumio_aoide_lirc_support.txt' build/scripts/raspberryconfig.sh
-	linenum=$(grep -n 'gpu_mem' scripts/raspberryconfig.sh | awk -F ":" '{print $1}')
-	linenumfinal=$[$linenum+1]
-	linenumfinala=$linenumfinal"a"
-	sed -i "$linenumfinala dtoverlay=lirc-rpi,gpio_in_pin=26,gpio_in_pull=up" scripts/raspberryconfig.sh
-fi
+	sed -i -e '/BUILD="arm"/r patches/volumio_aoide1.txt' build/build.sh
+	sed -i -e '/Cloning Volumio UI/r patches/volumio_aoide2.txt' build/build.sh
+	if [ "$IR_Support" = true ]; then
+		sed -i -e '/Writing cmdline.txt file/r patches/volumio_aoide_lirc_support.txt' build/scripts/raspberryconfig.sh
+	fi
 }
 function aoide_pitft_patch(){
-sed -i -e '/BUILD="arm"/r patches/volumio_aoide_pitft1.txt' build/build.sh
-sed -i -e '/Cloning Volumio UI/r patches/volumio_aoide_pitft2.txt' build/build.sh
-if [ "$IR_Support" = true ]; then
-	sed -i -e '/Writing cmdline.txt file/r patches/volumio_aoide_lirc_support.txt' build/scripts/raspberryconfig.sh
-fi
+	sed -i -e '/BUILD="arm"/r patches/volumio_aoide_pitft1.txt' build/build.sh
+	sed -i -e '/Cloning Volumio UI/r patches/volumio_aoide_pitft2.txt' build/build.sh
+	if [ "$IR_Support" = true ]; then
+		sed -i -e '/Writing cmdline.txt file/r patches/volumio_aoide_lirc_support.txt' build/scripts/raspberryconfig.sh
+	fi
 }
 function setsource(){
-sed -i 's/^source.*$/source=http:\/\/'"$SS"'/g' build/recipes/arm.conf
+	sed -i 's/^source.*$/source=http:\/\/'"$SS"'/g' build/recipes/arm.conf
 }
 function build(){
-cd build
-./build.sh -b arm -d pi -v $VERSION -l $REPONAME
-echo "Build Complete!"
-cd ..
+	cd build
+	./build.sh -b arm -d pi -v $VERSION -l $REPONAME
+	echo "Build Complete!"
+	cd ..
 }
 function gz(){
-gzip build/*.img
-sleep 3
-if [ ! -d "output" ]; then
-mkdir output
-fi
-mv build/*.img.gz output/
+	gzip build/*.img
+	sleep 3
+	if [ ! -d "output" ]; then
+	mkdir output
+	fi
+	mv build/*.img.gz output/
 }
 for (( ; ; ))
 do
