@@ -1,0 +1,9 @@
+echo "Patch MPD Client Volume settings"
+MPDVOLUMELINE=$(sed -n '/\"id\": \"mpdvolume/=' /volumio/app/plugins/audio_interface/alsa_controller/UIConfig.json)
+MPDVOLUMEVALUE=$[ $MPDVOLUMELINE + 5 ]
+MPDVOLUMEVALUE=$MPDVOLUMEVALUE"c"
+sed -ie "$MPDVOLUMEVALUE \"value\":true" /volumio/app/plugins/audio_interface/alsa_controller/UIConfig.json
+
+echo "Remove volumio update settings"
+sed -i "s/TRANSLATE.SYSTEM.SYSTEM_UPDATES/TRANSLATE.SYSTEM.SYSTEM_SETTINGS/g" /volumio/app/plugins/system_controller/system/UIConfig.json
+sed -i '82,88d' /volumio/app/plugins/system_controller/system/UIConfig.json

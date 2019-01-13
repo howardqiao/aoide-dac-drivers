@@ -97,8 +97,3 @@ linenumfinal=$[$linenum+1]
 linenumfinala=$linenumfinal"a"
 sed -i "$linenumfinala dtoverlay=lirc-rpi,gpio_in_pin=26,gpio_in_pull=up" build/scripts/raspberryconfig.sh
 
-echo "Patch MPD Client Volume settings"
-MPDVOLUMELINE=$(sed -n '/\"id\": \"mpdvolume/=' /volumio/app/plugins/audio_interface/alsa_controller/UIConfig.json)
-MPDVOLUMEVALUE=$[ $MPDVOLUMELINE + 5 ]
-MPDVOLUMEVALUE=$MPDVOLUMEVALUE"c"
-sed -ie "$MPDVOLUMEVALUE \"value\":true" /volumio/app/plugins/audio_interface/alsa_controller/UIConfig.json
