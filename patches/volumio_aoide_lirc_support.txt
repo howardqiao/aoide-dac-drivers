@@ -91,11 +91,10 @@ sed -i "s/^DEVICE=\".*\"/DEVICE=\"\/dev\/lirc0\"/" /etc/lirc/hardware.conf
 sed -i "s/^MODULES=\".*\"/MODULES=\"lirc_rpi\"/" /etc/lirc/hardware.conf
 
 echo "Enable lirc-rpi overlay in config.txt"
-sed -i -e '/Writing cmdline.txt file/r patches/volumio_aoide_lirc_support.txt' build/scripts/raspberryconfig.sh
 linenum=$(grep -n 'gpu_mem' build/scripts/raspberryconfig.sh | awk -F ":" '{print $1}')
 linenumfinal=$[$linenum+1]
 linenumfinala=$linenumfinal"a"
 echo "Lirc in config.txt line is:"
 echo $linenumfinala
-sed -i "$linenumfinala dtoverlay=lirc-rpi,gpio_in_pin=26,gpio_in_pull=up" build/scripts/raspberryconfig.sh
+sed -i "$linenumfinala dtoverlay=lirc-rpi,gpio_in_pin=26,gpio_in_pull=up" /boot/config.txt
 
