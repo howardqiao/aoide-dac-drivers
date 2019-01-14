@@ -7,3 +7,4 @@ sed -ie "$MPDVOLUMEVALUE \"value\":true" /volumio/app/plugins/audio_interface/al
 echo "Remove volumio update settings"
 sed -i "s/TRANSLATE.SYSTEM.SYSTEM_UPDATES/TRANSLATE.SYSTEM.SYSTEM_SETTINGS/g" /volumio/app/plugins/system_controller/system/UIConfig.json
 sed -i '82,88d' /volumio/app/plugins/system_controller/system/UIConfig.json
+

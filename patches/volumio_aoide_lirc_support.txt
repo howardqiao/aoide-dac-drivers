@@ -95,5 +95,7 @@ sed -i -e '/Writing cmdline.txt file/r patches/volumio_aoide_lirc_support.txt' b
 linenum=$(grep -n 'gpu_mem' build/scripts/raspberryconfig.sh | awk -F ":" '{print $1}')
 linenumfinal=$[$linenum+1]
 linenumfinala=$linenumfinal"a"
+echo "Lirc in config.txt line is:"
+echo $linenumfinala
 sed -i "$linenumfinala dtoverlay=lirc-rpi,gpio_in_pin=26,gpio_in_pull=up" build/scripts/raspberryconfig.sh
 
