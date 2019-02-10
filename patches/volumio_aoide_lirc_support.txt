@@ -76,14 +76,14 @@ begin
         button = volumeup
 	delay = 2
         repeat = 3
-        config = mpc volume +5
+        config = amixer -c 1 sset 'Digital' 5%+
 end
 begin
         prog = irexec
         button = volumedown
 	delay = 2
 	repeat = 3
-        config = mpc volume -5
+        config = amixer -c 1 sset 'Digital' 5%-
 end' > $FILE_LIRCRC
 sed -i "s/^LIRCD_ARGS=\".*\"/LIRCD_ARGS=\"--uinput\"/" /etc/lirc/hardware.conf
 sed -i "s/^DRIVER=\".*\"/DRIVER=\"default\"/" /etc/lirc/hardware.conf
