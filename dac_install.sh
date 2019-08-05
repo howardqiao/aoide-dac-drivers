@@ -1,6 +1,6 @@
 #!/bin/bash
-driver_version="4.14.56"
-firmware_hash="d985893ae67195d0cce632efe4437e5fcde4b64b"
+driver_version="4.14.60"
+firmware_hash="ce2a9f85a6fd88f8c42ef54b7bad99b42e76e403"
 driver_path="/lib/modules/"$driver_version+"/kernel/sound/soc/codecs/sabre9018k2m.ko"
 driver_url="https://github.com/howardqiao/aoide-dac-drivers/raw/master/drivers/aoide_dac_"$driver_version".tar.gz"
 driver_filename="aoide_dac_"$driver_version".tar.gz"
@@ -75,6 +75,7 @@ function driver_install(){
 		rm $driver_filename
 		depmod -b / -a $driver_version+
 		depmod -b / -a $driver_version-v7+
+		depmod -b / -a $driver_version-v7l+
 		sync
 	else
 		echo "Download driver failed"
