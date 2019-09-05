@@ -1,5 +1,5 @@
 #---Aoide Patch---#
-driver_version="4.14.92"
+driver_version="4.19.60"
 echo "volumio aoide pitft patches"
 echo "Patch arm.conf"
 #cp recipes/arm.conf.bak recipes/arm.conf
