@@ -1,6 +1,6 @@
 #!/bin/bash
-newest_driver_version="4.19.69"
-newest_firmware_hash="f8c5a8734cde51ab94e07c204c97563a65a68636"
+newest_driver_version="4.19.68"
+newest_firmware_hash="b61d5d17456947392d9a42d3f2d76a5d0c394177"
 current_kernel_version=$(uname -r)
 proper_driver_version=${current_kernel_version:0:(${#current_kernel_version}-1)}
 driver_test_path="/lib/modules/"$proper_driver_version+"/kernel/sound/soc/codecs/sabre9018k2m.ko"
