@@ -49,6 +49,7 @@ function driver_install(){
 		tar zxvf drivers/aoide_dac_$newest_driver_version.tar.gz -C /
 		depmod -b / -a $newest_driver_version+
 		depmod -b / -a $newest_driver_version-v7+
+		depmod -b / -a $newest_driver_version-v7l+
 	fi
 	echo ">Drivers install complete!"
 }
