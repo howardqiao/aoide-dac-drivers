@@ -1,6 +1,6 @@
 #!/bin/bash
 VERSION="2.632"
-KERNEL_VERSION="4.19.75"
+KERNEL_VERSION="4.19.73"
 DEFAULT_SS="archive.volumio.org/raspbian"
 SS="archive.volumio.org\/raspbian"
 REPONAME=""
