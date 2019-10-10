@@ -1,6 +1,6 @@
 #!/bin/bash
-driver_version="4.19.73"
-firmware_hash="6f71edd8d599f54de28f01ce62385f3409117730"
+driver_version="4.19.75"
+firmware_hash="d9321aceacfc6619b4238c6c764203b1122f2f9b"
 driver_path="/lib/modules/"$driver_version+"/kernel/sound/soc/bcm/aoide-dacii.ko"
 driver_url="https://github.com/howardqiao/aoide-dac-drivers/raw/master/drivers/aoide_dac_"$driver_version".tar.gz"
 driver_filename="aoide_dac_"$driver_version".tar.gz"
