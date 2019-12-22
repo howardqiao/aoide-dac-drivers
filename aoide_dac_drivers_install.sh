@@ -1,6 +1,6 @@
 #!/bin/bash
-newest_driver_version="4.19.75"
-newest_firmware_hash="d9321aceacfc6619b4238c6c764203b1122f2f9b"
+newest_driver_version="4.19.86"
+newest_firmware_hash="b9ecbe8d0e3177afed08c54fc938938100a0b73f"
 current_kernel_version=$(uname -r)
 proper_driver_version=${current_kernel_version:0:(${#current_kernel_version}-1)}
 driver_test_path="/lib/modules/"$proper_driver_version+"/kernel/sound/soc/codecs/sabre9018k2m.ko"
@@ -44,12 +44,14 @@ function driver_install(){
 		depmod -b / -a $proper_driver_version+
 		depmod -b / -a $proper_driver_version-v7+
 		depmod -b / -a $proper_driver_version-v7l+
+		depmod -b / -a $proper_driver_version-v8+
 	else
 		kernel_install
 		tar zxvf drivers/aoide_dac_$newest_driver_version.tar.gz -C /
 		depmod -b / -a $newest_driver_version+
 		depmod -b / -a $newest_driver_version-v7+
 		depmod -b / -a $newest_driver_version-v7l+
+		depmod -b / -a $newest_driver_version-v8+
 	fi
 	echo ">Drivers install complete!"
 }

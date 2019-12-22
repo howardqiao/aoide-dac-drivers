@@ -1,6 +1,6 @@
 #!/bin/bash
-driver_version="4.19.75"
-firmware_hash="d9321aceacfc6619b4238c6c764203b1122f2f9b"
+driver_version="4.19.86"
+firmware_hash="b9ecbe8d0e3177afed08c54fc938938100a0b73f"
 driver_path="/lib/modules/"$driver_version+"/kernel/sound/soc/bcm/aoide-dacii.ko"
 driver_url="https://github.com/howardqiao/aoide-dac-drivers/raw/master/drivers/aoide_dac_"$driver_version".tar.gz"
 driver_filename="aoide_dac_"$driver_version".tar.gz"
@@ -18,9 +18,10 @@ function menu_show(){
 	echo "Aoide driver installer"
 	echo "-----------------------"
 	echo "1) Aoide DAC II"
-	echo "2) Aoide Digi Pro"
-	echo "3) Aoide Zero DAC+"
-	echo "4) Aoide Zero Digi+"
+	echo "2) Aoide DAC Pro"
+	echo "3) Aoide Digi Pro"
+	echo "4) Aoide Zero DAC+"
+	echo "5) Aoide Zero Digi+"
 	echo ""
 	echo "5) Exit"
 	echo "-----------------------"
@@ -76,6 +77,7 @@ function driver_install(){
 		depmod -b / -a $driver_version+
 		depmod -b / -a $driver_version-v7+
 		depmod -b / -a $driver_version-v7l+
+		depmod -b / -a $driver_version-v8+
 		sync
 	else
 		echo "Download driver failed"
@@ -84,6 +86,7 @@ function driver_install(){
 function driver_disable(){
 	sed -i "s/audio=on/audio=off/" /boot/config.txt
 	sed -i '/dtoverlay=aoide-dacii/d' /boot/config.txt
+	sed -i '/dtoverlay=aoide-dacpro/d' /boot/config.txt
 	sed -i '/dtoverlay=aoide-digipro/d' /boot/config.txt
 	sed -i '/dtoverlay=aoide-zero-dacplus/d' /boot/config.txt
 	sed -i '/dtoverlay=aoide-zero-digiplus/d' /boot/config.txt
@@ -136,23 +139,27 @@ do
 	echo "You selected Aoide DAC II"
 	dtoverlay="aoide-dacii"
 	driver_enable
-	;;
 	2)
+	echo "You selected Aoide DAC Pro"
+	dtoverlay="aoide-dacpro"
+	driver_enable
+	;;
+	3)
 	echo "You selected Aoide Digi Pro"
 	dtoverlay="aoide-digipro"
 	driver_enable
 	;;
-	3)
+	4)
 	echo "You selected Aoide Zero DAC+"
 	dtoverlay="aoide-zero-dacplus"
 	driver_enable
 	;;
-	4)
+	5)
 	echo "You selected Aoide Zero Digi+"
 	dtoverlay="aoide-zero-digiplus"
 	driver_enable
 	;;
-	5)
+	6)
 	exit 1
 	;;
 	esac
