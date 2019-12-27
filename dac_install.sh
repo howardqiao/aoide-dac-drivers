@@ -139,6 +139,7 @@ do
 	echo "You selected Aoide DAC II"
 	dtoverlay="aoide-dacii"
 	driver_enable
+	;;
 	2)
 	echo "You selected Aoide DAC Pro"
 	dtoverlay="aoide-dacpro"
