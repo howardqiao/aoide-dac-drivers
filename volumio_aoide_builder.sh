@@ -5,6 +5,9 @@ DEFAULT_SS="archive.volumio.org/raspbian"
 SS="archive.volumio.org\/raspbian"
 REPONAME=""
 IR_Support=true
+PROXY=""
+PROXY_Support=true
+
 function download(){
 	git clone https://github.com/volumio/build.git --depth 1
 }
@@ -19,22 +22,45 @@ function clear_reset(){
 function clear_all(){
 	rm -rf ./build
 }
+function set_proxy(){
+	sed -i -e "s/^proxy=\".*\"/proxy=\"$PROXY\"/" patches/volumio_aoide1.txt
+	sed -i -e "s/^proxy=\".*\"/proxy=\"$PROXY\"/" patches/volumio_aoide_pitft1.txt
+}
 function set_kernel_version(){
 	sed -i -e "s/^driver_version=\".*\"/driver_version=\"$KERNEL_VERSION\"/" patches/volumio_aoide1.txt
 	sed -i -e "s/^driver_version=\".*\"/driver_version=\"$KERNEL_VERSION\"/" patches/volumio_aoide_pitft1.txt
 }
 function aoide_patch(){
+	if [ "$PROXY_Support" = true ]; then
+		set_proxy
+	fi
 	sed -i -e '/BUILD="arm"/r patches/volumio_aoide1.txt' build/build.sh
 	sed -i -e '/Cloning Volumio UI/r patches/volumio_aoide2.txt' build/build.sh
 	sed -i -e '/Writing cmdline.txt file/r patches/common.txt' build/scripts/raspberryconfig.sh
+	
+	cp build/scripts/initramfs/mkinitramfs-custom.sh build/scripts/initramfs/temp.sh
+	linenum=$(grep -n 'DESTDIR=${DESTDIR_REAL}' build/scripts/initramfs/mkinitramfs-custom.sh | awk -F ":" '{print $1}' | tail -n1)
+	{ head -n $(($linenum-1)) build/scripts/initramfs/mkinitramfs-custom.sh; cat patches/patch_mkinitramfs.txt; tail -n +$linenum build/scripts/initramfs/mkinitramfs-custom.sh; } > build/scripts/initramfs/temp.sh
+	cp build/scripts/initramfs/temp.sh build/scripts/initramfs/mkinitramfs-custom.sh
+	#rm cp build/scripts/initramfs/temp.sh
+	
 	if [ "$IR_Support" = true ]; then
 		sed -i -e '/Writing cmdline.txt file/r patches/volumio_aoide_lirc_support.txt' build/scripts/raspberryconfig.sh
 	fi
+	
 }
 function aoide_pitft_patch(){
+	if [ "$PROXY_Support" = true ]; then
+		set_proxy
+	fi
 	sed -i -e '/BUILD="arm"/r patches/volumio_aoide_pitft1.txt' build/build.sh
 	sed -i -e '/Cloning Volumio UI/r patches/volumio_aoide_pitft2.txt' build/build.sh
 	sed -i -e '/Writing cmdline.txt file/r patches/common.txt' build/scripts/raspberryconfig.sh
+	cp build/scripts/initramfs/mkinitramfs-custom.sh build/scripts/initramfs/temp.sh
+	linenum=$(grep -n 'DESTDIR=${DESTDIR_REAL}' build/scripts/initramfs/mkinitramfs-custom.sh | awk -F ":" '{print $1}' | tail -n1)
+	{ head -n $(($linenum-1)) build/scripts/initramfs/mkinitramfs-custom.sh; cat patches/patch_mkinitramfs.txt; tail -n +$linenum build/scripts/initramfs/mkinitramfs-custom.sh; } > build/scripts/initramfs/temp.sh
+	cp build/scripts/initramfs/temp.sh build/scripts/initramfs/mkinitramfs-custom.sh
+	#rm cp build/scripts/initramfs/temp.sh
 	if [ "$IR_Support" = true ]; then
 		sed -i -e '/Writing cmdline.txt file/r patches/volumio_aoide_lirc_support.txt' build/scripts/raspberryconfig.sh
 	fi
@@ -44,7 +70,7 @@ function setsource(){
 }
 function build(){
 	cd build
-	./build.sh -b arm -d pi -v $VERSION -l $REPONAME
+	sudo ./build.sh -b arm -d pi -v $VERSION -l $REPONAME
 	echo "Build Complete!"
 	cd ..
 }
@@ -64,6 +90,8 @@ OPTION=$(whiptail --title "Volumio Image Build Tools(V$VERSION,$KERNEL_VERSION)"
 "Download" "Download latest build script." \
 "Original" "Build original image." \
 "AOIDE" "Build with AOIDE DACs Drivers." \
+"AOIDE_PATCH" "Patch with AOIDE DACs Drivers." \
+"AOIDE_BUILD" "build only" \
 "PITFT" "Build with AOIDE DACs Drivers and Screen." \
 "IRSupport" "Build with IR Support." \
 "Version" "Set image version." \
@@ -95,6 +123,24 @@ case $OPTION in
 	REPONAME="aoide"
 	build
 	gz
+	;;
+	"AOIDE_PATCH")
+	rm -rf build
+	echo "Copy new build folder"
+	cp -a build_new build
+	echo "Set source"
+	setsource
+	echo "Set kernel version"
+	set_kernel_version
+	echo "Patch"
+	#aoide_patch
+	;;
+	"AOIDE_BUILD")
+	echo "Build aoide image"
+	echo "Set repo name"
+	REPONAME="aoide"
+	echo "Build"
+	build
 	;;
 	"PITFT")
 	clear_reset

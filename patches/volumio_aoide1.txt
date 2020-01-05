@@ -1,10 +1,14 @@
 #---Aoide Patch---#
-driver_version="4.19.60"
+driver_version="4.19.86"
+proxy="socks5://192.168.50.21:1080"
 echo "volumio aoide patches"
 echo "Patch arm.conf"
 cp recipes/arm.conf.bak recipes/arm.conf
 cp scripts/raspberryconfig.sh.bak scripts/raspberryconfig.sh
 sed -i '/busybox/ s/$/ binutils lirc/' recipes/arm.conf
+
+echo "Patch raspberryconfig.sh"
+echo "1.Add Aoide dac drivers support."
 linenum=$(grep -n 'On The Fly Patch' scripts/raspberryconfig.sh | awk -F ":" '{print $1}')
 linenumfinal=$[$linenum+1]
 linenumfinala=$linenumfinal"a"
@@ -15,4 +19,30 @@ sed -i "$linenumfinala wget https://github.com/howardqiao/aoide-dac-drivers/raw/
 sed -i "$linenumfinala cd /" scripts/raspberryconfig.sh
 sed -i "$linenumfinala touch /boot/ssh" scripts/raspberryconfig.sh
 sed -i "$linenumfinala echo 'Adding Aoide-DACs Kernel Module and dtbo'" scripts/raspberryconfig.sh
+
+echo "2.Add 64bit kernel support"
+
+echo "(1)deploy v8 modules"
+linenum=$(grep -n 'KERNEL_VERSION-v7l+' scripts/raspberryconfig.sh | awk -F ":" '{print $1}')
+linenumfinala=$linenum"a"
+sed -i "$linenumfinala depmod \$KERNEL_VERSION-v8+" scripts/raspberryconfig.sh
+
+echo "(2)Disable remove of v8 kernels"
+sed -i 's/if \[ -d /if \[ ! -d /g' scripts/raspberryconfig.sh
+
+echo "(3)Enlarge boot partion"
+sed -i 's/64/256/g' scripts/raspberryimage.sh
+
+echo "(4)Pack v8 kernels"
+sed -i 's/-n3/-n4/g' scripts/initramfs/mkinitramfs-custom.sh
+
+linenum=$(grep -n 'l_version=' scripts/initramfs/mkinitramfs-custom.sh | awk -F ":" '{print $1}')
+linenumfinala=$linenum"a"
+sed -i "$linenumfinala f_version=\$(echo \${versions} | awk '{print \$4}')
+" scripts/initramfs/mkinitramfs-custom.sh
+
+echo "3.Add proxy support"
+linenum=$(grep -n '^sudo curl -L --output' scripts/raspberryconfig.sh | awk -F ":" '{print $1}')
+linenumfinala=$linenum"a"
+sed -i "$linenumfinala sudo sed -i 's+} -L+} --proxy $proxy -L+g' /usr/bin/rpi-update" scripts/raspberryconfig.sh
 #---Aoide Patch---#

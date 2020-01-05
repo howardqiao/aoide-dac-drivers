@@ -1,0 +1,10 @@
+
+echo "build f_version"
+if [ ! ${f_version} = "" ]; then
+  DESTDIR=${DESTDIR_OTHER}
+  version=${f_version}
+  echo "Version: ${f_version}"
+  build_initramfs
+  cp -rf "${DESTDIR_OTHER}/lib/modules/${f_version}" "${DESTDIR_REAL}/lib/modules/${f_version}"
+fi
+

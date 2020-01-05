@@ -1,12 +1,15 @@
 #---Aoide Patch---#
-driver_version="4.19.60"
+driver_version="4.19.86"
+proxy="socks5://192.168.50.21:1080"
 echo "volumio aoide pitft patches"
 echo "Patch arm.conf"
 #cp recipes/arm.conf.bak recipes/arm.conf
 #cp scripts/raspberryconfig.sh.bak scripts/raspberryconfig.sh
 # jian ce arm.conf neirong shifou baohan lirc
 sed -i '/busybox/ s/$/ binutils lirc devscripts debhelper dh-autoreconf libasound2-dev libudev-dev libibus-1.0-dev libdbus-1-dev libx11-dev libxcursor-dev libxext-dev libxi-dev libxinerama-dev libxrandr-dev libxss-dev libxt-dev libxxf86vm-dev libgl1-mesa-dri libgl1-mesa-dev fcitx-libs-dev libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-ttf-2.0-0/' recipes/arm.conf
+
 echo "Patch scripts/raspberryconfig.sh"
+echo "1.Add tft support"
 linenum=$(grep -n 'On The Fly Patch' scripts/raspberryconfig.sh | awk -F ":" '{print $1}')
 linenumfinal=$[$linenum+1]
 linenumfinala=$linenumfinal"a"
@@ -28,6 +31,8 @@ sed -i "$linenumfinala dpkg -i /home/volumio/zpod/zpod_res/*.deb" scripts/raspbe
 sed -i "$linenumfinala git clone --depth 1 https://github.com/howardqiao/zpod.git /home/volumio/zpod" scripts/raspberryconfig.sh
 sed -i "$linenumfinala cp /home/volumio/adafruit-retrogame/retrogame /usr/bin/" scripts/raspberryconfig.sh
 sed -i "$linenumfinala git clone --depth 1 https://github.com/adafruit/adafruit-retrogame.git /home/volumio/adafruit-retrogame" scripts/raspberryconfig.sh
+
+echo "2.Add dac drivers support"
 sed -i "$linenumfinala rm aoide_dac_$driver_version.tar.gz" scripts/raspberryconfig.sh
 sed -i "$linenumfinala tar xf aoide_dac_$driver_version.tar.gz" scripts/raspberryconfig.sh
 sed -i "$linenumfinala echo 'Extracting Aoide-DACs Modules'" scripts/raspberryconfig.sh
@@ -49,5 +54,35 @@ sed -i "$linenumfinala hdmi_cvt=320 240 60 1 0 0 0" scripts/raspberryconfig.sh
 sed -i "$linenumfinala framebuffer_width=320" scripts/raspberryconfig.sh
 sed -i "$linenumfinala framebuffer_height=240" scripts/raspberryconfig.sh
 
+echo "3.Add 64bit kernel support"
 
+echo "(1)deploy v8 modules"
+linenum=$(grep -n 'KERNEL_VERSION-v7l+' scripts/raspberryconfig.sh | awk -F ":" '{print $1}')
+linenumfinala=$linenum"a"
+sed -i "$linenumfinala depmod \$KERNEL_VERSION-v8+" scripts/raspberryconfig.sh
+
+echo "(2)Disable remove of v8 kernels"
+sed -i 's/if \[ -d /if \[ ! -d /g' scripts/raspberryconfig.sh
+
+echo "(3)Enlarge boot partion"
+sed -i 's/64/256/g' scripts/raspberryimage.sh
+
+echo "(4)Pack v8 kernels"
+sed -i 's/-n3/-n4/g' scripts/raspberryimage.sh
+
+linenum=$(grep -n 'l_version=' scripts/initramfs/mkinitramfs-custom.sh | awk -F ":" '{print $1}')
+linenumfinala=$linenum"a"
+sed -i "$linenumfinala f_version=\$(echo \${versions} | awk '{print \$4}')
+" scripts/initramfs/mkinitramfs-custom.sh
+
+linenum=$(grep -n '{l_version} = ' scripts/initramfs/mkinitramfs-custom.sh | awk -F ":" '{print $1}')
+linenumfinal=$[$linenum+10]
+sed -rni 'p;$linenum,$linenumfinalH;$linenumfinal{g;p};$linenumfinal{g;s/^\n//;p}' scripts/initramfs/mkinitramfs-custom.sh
+
+sed -i '$linenum,$linenumfinals#l_version#f_version#' scripts/initramfs/mkinitramfs-custom.sh
+
+echo "4.Add proxy support"
+linenum=$(grep -n '^sudo curl -L --output' scripts/raspberryconfig.sh | awk -F ":" '{print $1}')
+linenumfinala=$linenum"a"
+sed -i "$linenumfinala sudo sed -i 's+} -L+} --proxy $proxy -L+g' /usr/bin/rpi-update" scripts/raspberryconfig.sh
 #---Aoide Patch---#

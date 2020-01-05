@@ -91,7 +91,7 @@ sed -i "s/^DEVICE=\".*\"/DEVICE=\"\/dev\/lirc0\"/" /etc/lirc/hardware.conf
 sed -i "s/^MODULES=\".*\"/MODULES=\"lirc_rpi\"/" /etc/lirc/hardware.conf
 
 echo "Enable lirc-rpi overlay in config.txt"
-linenum=$(grep -n 'gpu_mem' build/scripts/raspberryconfig.sh | awk -F ":" '{print $1}')
+linenum=$(grep -n 'gpu_mem' /boot/config.txt | awk -F ":" '{print $1}')
 linenumfinal=$[$linenum+1]
 linenumfinala=$linenumfinal"a"
 echo "Lirc in config.txt line is:"
