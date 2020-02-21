@@ -15,7 +15,7 @@ linenumfinala=$linenumfinal"a"
 sed -i "$linenumfinala rm aoide_dac_$driver_version.tar.gz" scripts/raspberryconfig.sh
 sed -i "$linenumfinala tar xf aoide_dac_$driver_version.tar.gz" scripts/raspberryconfig.sh
 sed -i "$linenumfinala echo 'Extracting Aoide-DACs Modules'" scripts/raspberryconfig.sh
-sed -i "$linenumfinala wget https://github.com/howardqiao/aoide-dac-drivers/raw/master/drivers/aoide_dac_$driver_version.tar.gz" scripts/raspberryconfig.sh
+
 sed -i "$linenumfinala cd /" scripts/raspberryconfig.sh
 sed -i "$linenumfinala touch /boot/ssh" scripts/raspberryconfig.sh
 sed -i "$linenumfinala echo 'Adding Aoide-DACs Kernel Module and dtbo'" scripts/raspberryconfig.sh
