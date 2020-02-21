@@ -35,12 +35,14 @@ function aoide_patch(){
 	
 	echo "Path Multistrap"
 	linenum=$(grep -n 'multistrap -a' build/build.sh | awk -F ":" '{print $1}')
-	linenumfinal=$[$linenum+1]
+	linenumfinal=$[$linenum-1]
 	linenumfinala=$linenumfinal"a"
 
 	line1='mkdir -p "build/arm/root/etc/apt/trusted.gpg.d"'
 	line2='apt-key --keyring "build/$BUILD/root/etc/apt/trusted.gpg.d/debian.gpg"  adv --batch --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 7638D0442B90D010'
 	line3='apt-key --keyring "build/$BUILD/root/etc/apt/trusted.gpg.d/debian.gpg"  adv --batch --keyserver hkp://keyserver.ubuntu.com:80 --recv-key CBF8D6FD518E17E1'
+	line5='apt-key --keyring "build/$BUILD/root/etc/apt/trusted.gpg.d/debian.gpg"  adv --batch --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 9165938D90FDDD2E'
+	sed -i "$linenumfinala $line5" build/build.sh
 	sed -i "$linenumfinala $line3" build/build.sh
 	sed -i "$linenumfinala $line2" build/build.sh
 	sed -i -e "$linenumfinala $line1" build/build.sh
@@ -66,7 +68,7 @@ function aoide_pitft_patch(){
 	fi
 	echo "Path Multistrap"
 	linenum=$(grep -n 'multistrap -a' build/build.sh | awk -F ":" '{print $1}')
-	linenumfinal=$[$linenum+1]
+	linenumfinal=$[$linenum-1]
 	linenumfinala=$linenumfinal"a"
 
 	line1='mkdir -p "build/arm/root/etc/apt/trusted.gpg.d"'

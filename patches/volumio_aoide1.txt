@@ -1,10 +1,10 @@
 #---Aoide Patch---#
 driver_version="4.19.86"
-proxy="socks5://192.168.50.21:1080"
+proxy=""
 echo "volumio aoide patches"
 echo "Patch arm.conf"
-cp recipes/arm.conf.bak recipes/arm.conf
-cp scripts/raspberryconfig.sh.bak scripts/raspberryconfig.sh
+#cp recipes/arm.conf.bak recipes/arm.conf
+#cp scripts/raspberryconfig.sh.bak scripts/raspberryconfig.sh
 sed -i '/busybox/ s/$/ binutils lirc/' recipes/arm.conf
 
 echo "Patch raspberryconfig.sh"

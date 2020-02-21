@@ -1,6 +1,6 @@
 #---Aoide Patch---#
 driver_version="4.19.86"
-proxy="socks5://192.168.50.21:1080"
+proxy=""
 echo "volumio aoide pitft patches"
 echo "Patch arm.conf"
 #cp recipes/arm.conf.bak recipes/arm.conf
