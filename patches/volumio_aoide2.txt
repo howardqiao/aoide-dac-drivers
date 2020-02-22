@@ -28,7 +28,7 @@ sed -i "$linenuma $dac2" build/arm/root/volumio/app/plugins/audio_interface/alsa
 sed -i "$linenuma $dac1" build/arm/root/volumio/app/plugins/audio_interface/alsa_controller/cards.json
 
 echo "Add DSP options for AOIDE DACs"
-linenum=$(grep -n '"Katana"' build/arm/root/volumio/app/plugins/audio_interface/alsa_controller/dac_dsp.json | awk -F ":" '{print $1}')
+linenum=$(grep -n '"Allo Katana"' build/arm/root/volumio/app/plugins/audio_interface/alsa_controller/dac_dsp.json | awk -F ":" '{print $1}')
 linenuma=$linenum"a"
 dac1='    {"name": "Aoide DAC II", "dsp_options":["Filte Type"]},'
 dac2='    {"name": "Aoide DAC Pro", "dsp_options":["DSP Program","DoP","Gain"]},'

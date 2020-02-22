@@ -13,7 +13,7 @@ function download(){
 }
 function clear_reset(){
 	cd build
-	git reset --hard
+	#git reset --hard
 	rm -rf ./build
 	cd ..
 }
@@ -134,7 +134,7 @@ OPTION=$(whiptail --title "Volumio Image Build Tools(V$VERSION,$KERNEL_VERSION)"
 case $OPTION in
 	"Tools")
 	apt update
-	apt install git squashfs-tools kpartx multistrap qemu-user-static samba debootstrap parted dosfstools qemu binfmt-support qemu-utils docker.io
+	apt install git squashfs-tools kpartx multistrap qemu-user-static samba debootstrap parted dosfstools qemu binfmt-support qemu-utils docker.io md5deep
 	;;
 	"Download")
 	clear_all
