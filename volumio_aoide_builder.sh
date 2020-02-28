@@ -1,12 +1,12 @@
 #!/bin/bash
-VERSION="2.703"
+VERSION="2.713"
 KERNEL_VERSION="4.19.86"
 DEFAULT_SS="archive.volumio.org/raspbian"
 SS="archive.volumio.org\/raspbian"
 REPONAME=""
 IR_Support=true
 PROXY=""
-PROXY_Support=true
+PROXY_Support=false
 
 function download(){
 	git clone https://github.com/volumio/build.git --depth 1

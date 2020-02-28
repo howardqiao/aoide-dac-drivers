@@ -84,7 +84,7 @@ sed -i '$linenum,$linenumfinals#l_version#f_version#' scripts/initramfs/mkinitra
 echo "4.Add proxy support"
 linenum=$(grep -n '^sudo curl -L --output' scripts/raspberryconfig.sh | awk -F ":" '{print $1}')
 linenumfinala=$linenum"a"
-if [ -n "$PROXY" ]; then
-	sed -i "$linenumfinala sudo sed -i 's+} -L+} --proxy $PROXY -L+g' /usr/bin/rpi-update" scripts/raspberryconfig.sh
+if [ -n "$proxy" ]; then
+	sed -i "$linenumfinala sudo sed -i 's+} -L+} --proxy $proxy -L+g' /usr/bin/rpi-update" scripts/raspberryconfig.sh
 fi
 #---Aoide Patch---#
