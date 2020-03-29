@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="2.713"
+VERSION="2.729"
 KERNEL_VERSION="4.19.86"
 DEFAULT_SS="archive.volumio.org/raspbian"
 SS="archive.volumio.org\/raspbian"
@@ -38,17 +38,18 @@ function aoide_patch(){
 	linenumfinal=$[$linenum-1]
 	linenumfinala=$linenumfinal"a"
 
-	line0='cp ../drivers/aoide_dac_'$KERNEL_VERSION'.tar.gz build/$BUILD/root/'
-	line1='mkdir -p "build/$BUILD/root/etc/apt/trusted.gpg.d"'
-	line2='apt-key --keyring "build/$BUILD/root/etc/apt/trusted.gpg.d/debian.gpg"  adv --batch --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 7638D0442B90D010'
-	line3='apt-key --keyring "build/$BUILD/root/etc/apt/trusted.gpg.d/debian.gpg"  adv --batch --keyserver hkp://keyserver.ubuntu.com:80 --recv-key CBF8D6FD518E17E1'
-	line5='apt-key --keyring "build/$BUILD/root/etc/apt/trusted.gpg.d/debian.gpg"  adv --batch --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 9165938D90FDDD2E'
+	line0='git clone https://github.com/howardqiao/myvolumio build/$BUILD/root/myvolumio'
+	line1='cp ../drivers/aoide_dac_'$KERNEL_VERSION'.tar.gz build/$BUILD/root/'
+	line2='mkdir -p "build/$BUILD/root/etc/apt/trusted.gpg.d"'
+	line3='apt-key --keyring "build/$BUILD/root/etc/apt/trusted.gpg.d/debian.gpg"  adv --batch --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 7638D0442B90D010'
+	line5='apt-key --keyring "build/$BUILD/root/etc/apt/trusted.gpg.d/debian.gpg"  adv --batch --keyserver hkp://keyserver.ubuntu.com:80 --recv-key CBF8D6FD518E17E1'
+	line6='apt-key --keyring "build/$BUILD/root/etc/apt/trusted.gpg.d/debian.gpg"  adv --batch --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 9165938D90FDDD2E'
+	sed -i "$linenumfinala $line6" build/build.sh
 	sed -i "$linenumfinala $line5" build/build.sh
 	sed -i "$linenumfinala $line3" build/build.sh
 	sed -i "$linenumfinala $line2" build/build.sh
 	sed -i "$linenumfinala $line1" build/build.sh
 	sed -i "$linenumfinala $line0" build/build.sh
-
 	sed -i -e '/BUILD="arm"/r patches/volumio_aoide1.txt' build/build.sh
 	sed -i -e '/Cloning Volumio UI/r patches/volumio_aoide2.txt' build/build.sh
 	sed -i -e '/Writing cmdline.txt file/r patches/common.txt' build/scripts/raspberryconfig.sh

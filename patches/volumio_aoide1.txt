@@ -5,13 +5,17 @@ echo "volumio aoide patches"
 echo "Patch arm.conf"
 #cp recipes/arm.conf.bak recipes/arm.conf
 #cp scripts/raspberryconfig.sh.bak scripts/raspberryconfig.sh
-sed -i '/busybox/ s/$/ binutils lirc/' recipes/arm.conf
+sed -i '/busybox/ s/$/ binutils lirc mkcue abcde cdcd cdde cd-discid cdparanoia eject flac gir1.2-glib-2.0 glyrc libcdaudio1 libdbus-glib-1-dev libglyr1 libpcre3-dev libpcre3 libpulsedsp libsbc1 python-gi rtkit zlib1g-dev bluez-tools pulseaudio-utils libfftw3-bin bluez-obexd libical1a libpulse0 libasound2-plugins 
+libfftw3-single3 libftdi1 pulseaudio-module-bluetooth manpages manpages-dev python-gobject libwebrtc-audio-processing1/' recipes/arm.conf
 
 echo "Patch raspberryconfig.sh"
 echo "1.Add Aoide dac drivers support."
 linenum=$(grep -n 'On The Fly Patch' scripts/raspberryconfig.sh | awk -F ":" '{print $1}')
 linenumfinal=$[$linenum+1]
 linenumfinala=$linenumfinal"a"
+sed -i "$linenumfinala cd \ && tar zxvf mv_others.tar.gz && rm mv_others.tar.gz" scripts/raspberryconfig.sh
+sed -i "$linenumfinala mv /myvolumio/mv_others.tar.gz /" scripts/raspberryconfig.sh
+sed -i "$linenumfinala echo 'extrace myvolumio config files'" scripts/raspberryconfig.sh
 sed -i "$linenumfinala rm aoide_dac_$driver_version.tar.gz" scripts/raspberryconfig.sh
 sed -i "$linenumfinala tar xf aoide_dac_$driver_version.tar.gz" scripts/raspberryconfig.sh
 sed -i "$linenumfinala echo 'Extracting Aoide-DACs Modules'" scripts/raspberryconfig.sh
