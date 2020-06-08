@@ -8,9 +8,28 @@ aoide-zero-dacplus
 
 www.aoide.cc
 
-For system that can use rpi-update.
-curl -L --output ./dac_install.sh https://github.com/howardqiao/aoide-dac-drivers/raw/master/dac_install.sh && chmod +x ./dac_install.sh
+For Raspbian,Raspberry OS,DietPI
+git clone https://github.com/howardqiao/aoide-dac-drivers.git
+cd aoide-dac-drivers
 sudo ./dac_install.sh
+
+    ┌────────┤ AOIDE DAC Drivers Installer(V4.19.118) ├────────┐
+    │ Select your DAC(Sound Card).                             │
+    │                                                          │
+    │                    1 AOIDE DAC Pro                       │
+    │                    2 AOIDE DAC II                        │
+    │                    3 AOIDE Digi Pro                      │
+    │                    4 AOIDE Zero DAC+                     │
+    │                    5 AOIDE ZPOD DAC                      │
+    │                    6 Raspi Voice HAT                     │
+    │                    D Disable DAC                         │
+    │                    E Exit                                │
+    │                                                          │
+    │                                                          │
+    │                                                          │
+    │              <Ok>                  <Exit>                │
+    │                                                          │
+    └──────────────────────────────────────────────────────────┘
 
 For Aoide TFT Screen based on raspbian
 curl -L --output ./aoidetft_setup.sh https://github.com/howardqiao/aoide-dac-drivers/raw/master/aoidetft_setup.sh && chmod +x ./aoidetft_setup.sh
