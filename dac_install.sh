@@ -202,8 +202,9 @@ do
 	"2" "AOIDE DAC II" \
 	"3" "AOIDE Digi Pro" \
 	"4" "AOIDE Zero DAC+" \
-	"5" "AOIDE ZPOD DAC" \
-	"6" "Raspi Voice HAT" \
+	"5" "AOIDE Zero Digi+" \
+	"6" "AOIDE ZPOD DAC" \
+	"7" "Raspi Voice HAT" \
 	"D" "Disable DAC" \
 	"E" "Exit" \
 	3>&1 1>&2 2>&3)
