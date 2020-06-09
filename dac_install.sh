@@ -157,7 +157,7 @@ function enable_dac(){
 	fi
 	
 	# If there's no specfied dtbo file , Install newest kernel and driver
-	if [ ! -f "/boot/$dtoverlay.dtbo" ]; then
+	if [ ! -f "/boot/overlays/$dtoverlay.dtbo" ]; then
 		install_newest_kernel_driver
 	fi
 	
