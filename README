@@ -4,7 +4,6 @@ AOIDE DAC Pro
 AOIDE DAC II
 AOIDE Digi Pro
 AOIDE Zero DAC+
-AOIDE Zero Digi+
 AOIDE ZPOD DAC
 Raspi Voice HAT  
 
@@ -15,17 +14,15 @@ git clone https://github.com/howardqiao/aoide-dac-drivers.git
 cd aoide-dac-drivers
 sudo ./dac_install.sh
 
-    ┌────────┤  AOIDE DAC Drivers Installer(V5.4.51)  ├────────┐
+    ┌────────┤ AOIDE DAC Drivers Installer(V4.19.118) ├────────┐
     │ Select your DAC(Sound Card).                             │
     │                                                          │
     │                    1 AOIDE DAC Pro                       │
     │                    2 AOIDE DAC II                        │
     │                    3 AOIDE Digi Pro                      │
     │                    4 AOIDE Zero DAC+                     │
-    │                    5 AOIDE Zero Digi+                    │
-    │                    6 AOIDE ZPOD DAC                      │
-    │                    7 Raspi Voice HAT                     │
-    │                    8 Install RPi Kernel V5.4.51          │
+    │                    5 AOIDE ZPOD DAC                      │
+    │                    6 Raspi Voice HAT                     │
     │                    D Disable DAC                         │
     │                    E Exit                                │
     │                                                          │
