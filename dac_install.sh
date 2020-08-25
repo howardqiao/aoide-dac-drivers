@@ -5,8 +5,8 @@
 # Newest driver version and firmware git hash
 TITLE="AOIDE DAC Drivers Installer"
 BACKTITLE="UGEEK WORKSHOP [ ugeek.aliexpress.com | ukonline2000.taobao.com ]"
-driver_version="4.19.118"
-firmware_hash="e1050e94821a70b2e4c72b318d6c6c968552e9a2"
+driver_version="5.4.51"
+firmware_hash="390477bf6dc80dddfafcd3682b4e026e96cfc4d7"
 
 driver_path="/lib/modules/"$driver_version+"/kernel/sound/soc/bcm/aoide-dacii.ko"
 driver_url="https://github.com/howardqiao/aoide-dac-drivers/raw/master/drivers/aoide_dac_"$driver_version".tar.gz"
@@ -197,13 +197,15 @@ do
 	OPTION=$(whiptail --title "$TITLE(V$driver_version)" \
 	--menu "Select your DAC(Sound Card)." \
 	--backtitle "$BACKTITLE" \
-	--cancel-button "Exit" 17 60 9 \
+	--cancel-button "Exit" 18 60 10 \
 	"1" "AOIDE DAC Pro" \
 	"2" "AOIDE DAC II" \
 	"3" "AOIDE Digi Pro" \
 	"4" "AOIDE Zero DAC+" \
-	"5" "AOIDE ZPOD DAC" \
-	"6" "Raspi Voice HAT" \
+	"5" "AOIDE Zero Digi+" \
+	"6" "AOIDE ZPOD DAC" \
+	"7" "Raspi Voice HAT" \
+	"8" "Install RPi Kernel V$driver_version" \
 	"D" "Disable DAC" \
 	"E" "Exit" \
 	3>&1 1>&2 2>&3)
@@ -237,7 +239,7 @@ do
 		enable_dac
 		;;
 		8)
-		install_newest_kernel_driver
+		kernel_install
 		;;
 		"D")
 		disable_dac
