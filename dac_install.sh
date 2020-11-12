@@ -5,8 +5,8 @@
 # Newest driver version and firmware git hash
 TITLE="AOIDE DAC Drivers Installer"
 BACKTITLE="UGEEK WORKSHOP [ ugeek.aliexpress.com | ukonline2000.taobao.com ]"
-driver_version="4.19.118"
-firmware_hash="e1050e94821a70b2e4c72b318d6c6c968552e9a2"
+driver_version="5.4.72"
+firmware_hash="e530832e9058ab73b0d45457aea06f0ea62a08a8"
 
 driver_path="/lib/modules/"$driver_version+"/kernel/sound/soc/bcm/aoide-dacii.ko"
 driver_url="https://github.com/howardqiao/aoide-dac-drivers/raw/master/drivers/aoide_dac_"$driver_version".tar.gz"
