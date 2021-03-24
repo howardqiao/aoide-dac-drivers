@@ -14,7 +14,7 @@ git clone https://github.com/howardqiao/aoide-dac-drivers.git
 cd aoide-dac-drivers
 sudo ./dac_install.sh
 
-    ┌────────┤ AOIDE DAC Drivers Installer(V4.19.118) ├────────┐
+    ┌────────┤ AOIDE DAC Drivers Installer(V5.10.17)  ├────────┐
     │ Select your DAC(Sound Card).                             │
     │                                                          │
     │                    1 AOIDE DAC Pro                       │
